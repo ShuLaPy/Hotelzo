@@ -93,7 +93,7 @@ const roomSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.ObjectId,
       ref: String,
-      required: true,
+      required: false,
     },
   },
   {
