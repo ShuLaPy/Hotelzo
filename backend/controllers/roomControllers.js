@@ -4,11 +4,20 @@ import catchAsyncError from "../middlewares/catchAsyncError";
 import APIFeatures from "../utils/apiFeatures";
 // Create new room ==> GET /api/rooms
 const allRooms = catchAsyncError(async (req, res) => {
-  const apiFeatures = new APIFeatures(Room.find(), req.query).search();
-  const rooms = await apiFeatures.query;
+  const resPerPage = 4;
+  const roomCount = await Room.countDocuments();
+  const apiFeatures = new APIFeatures(Room.find(), req.query).search().filter();
+  let rooms = await apiFeatures.query;
+  let filteredRoomsCount = rooms.length;
+
+  apiFeatures.paginate(resPerPage);
+  rooms = await apiFeatures.query.clone();
+
   res.status(200).json({
     success: true,
-    length: rooms.length,
+    roomCount,
+    resPerPage,
+    filteredRoomsCount,
     rooms,
   });
 });
