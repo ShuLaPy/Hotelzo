@@ -4,8 +4,9 @@ import {
   allRooms,
   newRoom,
 } from "../../../backend/controllers/roomControllers";
+import onError from "../../../backend/middlewares/error";
 
-const handler = nc();
+const handler = nc({ onError });
 
 dbConnect();
 
